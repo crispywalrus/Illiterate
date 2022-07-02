@@ -1,0 +1,36 @@
+* Illiterate: a literate emacs config
+** Lets start with how we map keys
+This is very important to emacs
+#+BEGIN_SRC elisp
+;; setup key bindings to allow for both super and hyper to have useful
+;; bindings. also paper over the differences between the defaults in
+;; the stock and railway cats distributions.
+(when (eq system-type 'darwin)
+  ;; mac osx, use ns-* settings to distiguish between the flavors of emacs available.
+  (if (boundp 'ns-use-native-fullscreen)
+      (progn
+        (setq ns-use-native-fullscreen t
+              ns-command-modifier 'meta
+              ns-option-modifier 'super
+              ns-right-option-modifier 'hyper)
+        (global-set-key (kbd "M-h") 'ns-do-hide-emacs))
+    (progn
+      (setq mac-command-modifier 'meta
+            mac-option-modifier 'super
+            mac-right-option-modifier 'hyper))
+    ()))
+#+END_SRC
+** Magit for integrated version control
+#+BEGIN_SRC elisp
+  (use-package magit
+	       :commands magit-status magit-blame
+	       (setq magit-auto-revert-mode nil
+		     magit-last-seen-setup-instructions "1.4.0")
+	       :bind (("s-g" . magit-status)
+		      ("s-b" . magit-blame)))
+#+END_SRC
+** Forge for magit
+#+BEGIN_SRC elisp
+  (use-package forge
+	       :after maigt)
+#+END_SRC
